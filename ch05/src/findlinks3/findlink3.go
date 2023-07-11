@@ -8,12 +8,15 @@ package main
 
 import (
 	"fmt"
+	"links"
 	"log"
 	"os"
 )
 
 // !+breadthFirst
-// breadthFirst calls f for each item in the worklist.
+//
+//	calls f for each item in the worklist.
+//
 // Any items returned by f are added to the worklist.
 // f is called at most once for each item.
 func breadthFirst(f func(item string) []string, worklist []string) {
