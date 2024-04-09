@@ -1,8 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
-func main() {
+func TestMockStack(t *testing.T) {
+	const N = 10
+	tt := 0 //指向栈顶，不是栈顶下一个数；tt表示栈的大小
+	stack := make([]int, N)
+
+	// 入栈
+	tt++
+	stack[tt] = 66
+	tt++
+	stack[tt] = 88
+	fmt.Println(stack)
+
+	//出栈
+	tt--
+	fmt.Println(stack[tt])
+
+	//不为空
+	if tt > 0 {
+		fmt.Println("stack不为空")
+	}
+}
+
+func TestSlice(t *testing.T) {
 	slice := make([]int, 3, 4)
 	fmt.Println(slice)
 
