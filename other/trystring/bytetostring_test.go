@@ -10,3 +10,9 @@ func TestByteString(t *testing.T) {
 	var data []byte = []byte(str)
 	fmt.Println(data)
 }
+
+func TestStringToByte(t *testing.T) {
+	var str string = "test"
+	fmt.Println(str[0])
+	fmt.Printf("%c\n", str[0])
+}
