@@ -68,7 +68,6 @@ func partition(array []int, startIndex int, endIndex int) int {
 		}
 	}
 	array[index] = pivot
-
 	return index
 }
 
