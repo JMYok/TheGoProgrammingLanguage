@@ -12,7 +12,7 @@ func TestByteString(t *testing.T) {
 }
 
 func TestStringToByte(t *testing.T) {
-	var str string = "test"
+	var str string = "ab"
 	fmt.Println(str[0])
 	fmt.Printf("%c\n", str[0])
 }
