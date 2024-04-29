@@ -10,19 +10,16 @@ func Test(test *testing.T) {
 }
 
 func dailyTemperatures(temperatures []int) []int {
-	n := len(temperatures)
 	var st []int
+	n := len(temperatures)
 	ans := make([]int, n)
 	for i := n - 1; i >= 0; i-- {
 		t := temperatures[i]
-		top := len(st) - 1
-		for len(st) > 0 && t >= temperatures[st[top]] {
-			st = st[:top]
+		if len(st) > 0 && t >= temperatures[st[len(st)-1]] {
+			st = st[:len(st)-1]
 		}
-		if len(st) <= 0 {
-			ans[i] = 0
-		} else {
-			ans[i] = st[top]
+		if len(st) > 0 {
+			ans[i] = st[len(st)-1] - i
 		}
 		st = append(st, i)
 	}
