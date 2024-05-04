@@ -63,3 +63,8 @@ func printLengthAndCapability(s []int) {
 	fmt.Println(s)
 	fmt.Printf("len=%d,cap=%d\n", len(s), cap(s))
 }
+
+func TestNil(t *testing.T) {
+	var a []int
+	t.Logf("len:%v cap:%v\n", len(a), cap(a))
+}
