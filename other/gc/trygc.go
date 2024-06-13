@@ -7,4 +7,6 @@ func main() {
 	//设置GC触发阈值
 	//debug.SetGCPercent(500)
 
+	//逃逸分析
+
 }
