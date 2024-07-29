@@ -1,82 +1,78 @@
 package main
 
-type LRUCache struct {
-	currentCap int
-	cap        int
-	hashmap    map[int]*LRUNode
-	head       *LRUNode
-	tail       *LRUNode
-}
-
 type LRUNode struct {
 	key  int
 	val  int
-	next *LRUNode
 	prev *LRUNode
+	next *LRUNode
+}
+
+type LRUCache struct {
+	nowCap int
+	cap    int
+	hash   map[int]*LRUNode
+	head   *LRUNode
+	tail   *LRUNode
 }
 
 func Constructor(capacity int) LRUCache {
-	lruCache := new(LRUCache)
-	lruCache.cap = capacity
-	lruCache.hashmap = make(map[int]*LRUNode)
-	lruCache.head = initNode(0, 0)
-	lruCache.tail = initNode(0, 0)
-	lruCache.head.next = lruCache.tail
-	lruCache.tail.prev = lruCache.head
-	return *lruCache
+	head, tail := &LRUNode{}, &LRUNode{}
+	head.next = tail
+	tail.prev = head
+	return LRUCache{nowCap: 0, cap: capacity, hash: map[int]*LRUNode{}, head: head, tail: tail}
 }
 
 func (this *LRUCache) Get(key int) int {
-	var node *LRUNode
-	var ok bool
-	if node, ok = this.hashmap[key]; !ok {
-		return -1
+	if node, ok := this.hash[key]; ok {
+		this.moveToHead(node)
+		return node.val
 	}
-	moveToHead(this.head, node)
-	return node.val
+	return -1
 }
 
 func (this *LRUCache) Put(key int, value int) {
-	var node *LRUNode
-	var ok bool
-	if node, ok = this.hashmap[key]; ok {
-		moveToHead(this.head, node)
+	if node, ok := this.hash[key]; ok {
 		node.val = value
+		this.moveToHead(node)
 		return
 	}
-	node = initNode(key, value)
-	this.hashmap[key] = node
-	addToHead(this.head, node)
-	this.currentCap++
-	if this.currentCap > this.cap {
-		delete(this.hashmap, this.tail.prev.key)
-		removeNode(this.tail.prev)
+	newNode := &LRUNode{key: key, val: value}
+	this.addToHead(newNode)
+	this.hash[key] = newNode
+	this.nowCap++
+	if this.nowCap > this.cap {
+		this.removeTail()
+		delete(this.hash, this.tail.prev.key)
+		this.nowCap--
 	}
 }
 
-func initNode(key int, val int) *LRUNode {
-	lruNode := new(LRUNode)
-	lruNode.key = key
-	lruNode.val = val
-	return lruNode
+func (this *LRUCache) moveToHead(node *LRUNode) {
+	this.removeNode(node)
+	this.addToHead(node)
 }
 
-func moveToHead(head *LRUNode, node *LRUNode) {
-	removeNode(node)
-	addToHead(head, node)
+func (this *LRUCache) addToHead(node *LRUNode) {
+	node.next = this.head.next
+	node.prev = this.head
+	this.head.next = node
+	node.next.prev = node
 }
 
-func addToHead(head *LRUNode, node *LRUNode) {
-	node.next = head.next
-	head.next.prev = node
-	head.next = node
-	node.prev = head
+func (this *LRUCache) removeNode(node *LRUNode) {
+	node.prev.next = node.next
+	node.next.prev = node.prev
+}
+func (this *LRUCache) removeTail() {
+	this.removeNode(this.tail.prev)
 }
 
-func removeNode(currNode *LRUNode) {
-	currNode.prev.next = currNode.next
-	currNode.next.prev = currNode.prev
-}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
 
 func main() {
 	lruCache := Constructor(2)
