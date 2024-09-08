@@ -21,25 +21,27 @@ func quickSortT(array []int, low, high int) {
 }
 
 func partitionT(array []int, low, high int) int {
-	left, right := low, high
+	l, r := low, high
 	pivot := array[low]
 	idx := low
-	for left <= right {
-		for left <= right {
-			if array[right] < pivot {
-				array[right], array[idx] = array[idx], array[right]
-				idx = right
-				right--
+	for l <= r {
+		for l <= r {
+			if array[r] < array[idx] {
+				array[r], array[idx] = array[idx], array[r]
+				idx = r
+				r--
+				break
 			}
-			right--
+			r--
 		}
-		for left <= right {
-			if array[left] >= pivot {
-				array[left], array[idx] = array[idx], array[left]
-				idx = left
-				left++
+		for l <= r {
+			if array[l] >= array[idx] {
+				array[l], array[idx] = array[idx], array[l]
+				idx = l
+				l++
+				break
 			}
-			left++
+			l++
 		}
 	}
 	array[idx] = pivot
