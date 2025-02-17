@@ -3,8 +3,10 @@ package string_test
 import (
 	"bytes"
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
+	"unsafe"
 )
 
 func TestLowlevelString(t *testing.T) {
@@ -33,9 +35,19 @@ func TestStringFor(t *testing.T) {
 }
 
 func TestStringPool(t *testing.T) {
-	str1 := "Hello Go"
-	str2 := "Hello Go"
+	str1 := "Hello Go2"
+	str2 := "Hello Go2"
+	sh1 := (*reflect.StringHeader)(unsafe.Pointer(&str1))
+	sh2 := (*reflect.StringHeader)(unsafe.Pointer(&str2))
+	//stringStruct地址
 	fmt.Println(&str1, &str2)
+	// 输出 0xc00002c420 0xc00002c430
+
+	// 底层数组地址
+	fmt.Println(sh1.Data, sh2.Data)
+	fmt.Println(sh1.Data == sh2.Data)
+	// 输出 10990392 10990392
+	// 输出 true
 }
 
 func TestStringModify(t *testing.T) {
